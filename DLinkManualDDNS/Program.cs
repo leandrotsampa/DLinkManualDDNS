@@ -3,11 +3,9 @@ using Microsoft.OpenApi.Models;
 var port = Environment.GetEnvironmentVariable("PORT");
 var builder = WebApplication.CreateBuilder(args);
 
+// Heroku pass default port by environment variable.
 if (port != null)
-{
-    Console.WriteLine($"Listening on PORT: {port}");
     builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(Convert.ToInt32(port)));
-}
 
 // Add services to the container.
 
