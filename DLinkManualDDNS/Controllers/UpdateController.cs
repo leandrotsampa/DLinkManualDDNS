@@ -30,7 +30,7 @@ namespace DLinkManualDDNS.Controllers
                 _logger.LogInformation($"[Identifier: {Request.HttpContext.TraceIdentifier}] Updating IP: {clientIp} User-Agent: {userAgent}");
 
                 // Get Username / Password.
-                var authorization = Request.Headers["Authorization"].FirstOrDefault();
+                var authorization = Request.Headers["Authorization"].FirstOrDefault().Replace("Basic", "").Trim();
                 var bytes = Convert.FromBase64String(authorization);
                 var userPwd = Encoding.ASCII.GetString(bytes).Split(':');
 
