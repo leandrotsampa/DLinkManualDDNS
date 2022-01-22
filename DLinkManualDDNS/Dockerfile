@@ -9,7 +9,7 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["DLinkManualDDNS/DLinkManualDDNS.csproj", "DLinkManualDDNS/"]
+COPY ["DLinkManualDDNS.csproj", "DLinkManualDDNS/"]
 RUN dotnet restore "DLinkManualDDNS/DLinkManualDDNS.csproj"
 WORKDIR "/src/DLinkManualDDNS"
 COPY . .
