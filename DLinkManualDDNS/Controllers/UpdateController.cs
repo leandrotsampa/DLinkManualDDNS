@@ -25,7 +25,7 @@ namespace DLinkManualDDNS.Controllers
             try
             {
                 var userAgent = Request.Headers["User-Agent"].FirstOrDefault();
-                var clientIp = Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                var clientIp = Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
                 _logger.LogInformation($"[Identifier: {Request.HttpContext.TraceIdentifier}] Updating IP: {clientIp} User-Agent: {userAgent}");
 
