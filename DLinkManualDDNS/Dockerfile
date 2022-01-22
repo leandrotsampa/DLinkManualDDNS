@@ -11,8 +11,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["DLinkManualDDNS/DLinkManualDDNS.csproj", "DLinkManualDDNS/"]
 RUN dotnet restore "DLinkManualDDNS/DLinkManualDDNS.csproj"
-COPY . .
 WORKDIR "/src/DLinkManualDDNS"
+COPY . .
 RUN dotnet build "DLinkManualDDNS.csproj" -c Release -o /app/build
 
 FROM build AS publish
