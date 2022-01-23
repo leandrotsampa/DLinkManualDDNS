@@ -27,7 +27,7 @@ namespace DLinkManualDDNS.Controllers
                 var userAgent = Request.Headers["User-Agent"].FirstOrDefault();
                 var clientIp = Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
-                _logger.LogInformation($"[Identifier: {Request.HttpContext.TraceIdentifier}] Updating IP: {clientIp} User-Agent: {userAgent}");
+                this.WriteLog($"Updating IP: {clientIp} User-Agent: {userAgent}");
 
                 // Get Username / Password.
                 var authorization = Request.Headers["Authorization"].FirstOrDefault().Replace("Basic", "").Trim();
@@ -40,7 +40,7 @@ namespace DLinkManualDDNS.Controllers
                 });
 
                 var response = await httpClient.GetStringAsync($"https://domains.google.com/nic/update?hostname={hostname}&myip={clientIp}");
-                _logger.LogInformation($"[Identifier: {Request.HttpContext.TraceIdentifier}] Response: {response}");
+                this.WriteLog($"Response: {response}");
 
                 return response switch
                 {
@@ -57,9 +57,18 @@ namespace DLinkManualDDNS.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"[Identifier: {Request.HttpContext.TraceIdentifier}]");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error.");
+                this.WriteLog("Internal error.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal error. (Code: {Request.HttpContext.TraceIdentifier})");
             }
+        }
+
+        private void WriteLog(string log, Exception ex = null)
+        {
+            string str = $"{DateTime.Now:dd/MM/yyyy HH:mm:ss} [{Request.HttpContext.TraceIdentifier}] ";
+
+            Console.WriteLine($"{str}{log}");
+            if (ex != null)
+                _logger.LogError(ex, str);
         }
     }
 }

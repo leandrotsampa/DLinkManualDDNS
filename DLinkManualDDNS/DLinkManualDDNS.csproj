@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <NoWarn>CA2254;S1075;1701;1702</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
